@@ -1,0 +1,3 @@
+#+TITLE: jaglar
+
+Script for project management backed by [[https://taskjuggler.org/][tj]].
