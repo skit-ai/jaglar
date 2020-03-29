@@ -7,6 +7,7 @@ authors = ["Abhinav Tushar <abhinav@lepisma.xyz>"]
 [tool.poetry.dependencies]
 python = "^3.8"
 matplotlib = "^3.2.1"
+xmljson = "^0.2.0"
 
 [tool.poetry.dev-dependencies]
 

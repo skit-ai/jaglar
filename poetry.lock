@@ -70,8 +70,16 @@ optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 version = "1.14.0"
 
+[[package]]
+category = "main"
+description = "Converts XML into JSON/Python dicts/arrays and vice-versa."
+name = "xmljson"
+optional = false
+python-versions = "*"
+version = "0.2.0"
+
 [metadata]
-content-hash = "1fe1adfb6d4aa217278082ae4e36b953b42458b43d83e0b262418e013cf60727"
+content-hash = "a5ae16bc4adfd4a97e73d434a00703dcf9fc4519a713df8e563ef2ce4b346e4f"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -168,4 +176,8 @@ python-dateutil = [
 six = [
     {file = "six-1.14.0-py2.py3-none-any.whl", hash = "sha256:8f3cd2e254d8f793e7f3d6d9df77b92252b52637291d0f0da013c76ea2724b6c"},
     {file = "six-1.14.0.tar.gz", hash = "sha256:236bdbdce46e6e6a3d61a337c0f8b763ca1e8717c03b369e87a7ec7ce1319c0a"},
+]
+xmljson = [
+    {file = "xmljson-0.2.0-py2.py3-none-any.whl", hash = "sha256:5cfcd641e3057a4bef256adbd75b738fb9ca6bd49e859840c6f1001c8ac8fc57"},
+    {file = "xmljson-0.2.0.tar.gz", hash = "sha256:9a0d3e658093c93af70bea4ddfaf15012e1a7d583c84f9c7ede0aadad0fe14e7"},
 ]
