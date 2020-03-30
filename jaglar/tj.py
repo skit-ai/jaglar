@@ -16,7 +16,7 @@ class Snippet:
 
     type: str
     props: List[str]
-    children: Optional["Snippet"] = None
+    children: Optional[List["Snippet"]] = None
 
 
 def format_snippet(snippet: Snippet, indent=0, force_brackets=False) -> str:
