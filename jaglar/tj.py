@@ -41,9 +41,42 @@ def format_snippet(snippet: Snippet, indent=0, force_brackets=False) -> str:
     return "\n".join(blocks)
 
 
+
+def resource_to_snippet(resource: Resource) -> Snippet:
+    """
+    Convert a resource to tj snippet.
+    """
+
+    return Snippet(
+        type="resource",
+        props=[resource.name, f"\"{resource.name}\""],
+        children=[
+            Snippet(
+                type="limit",
+                props=[],
+                children=[Snippet(type="dailymax", props=[f"{resource.hours_per_day}h"])]
+            )
+        ]
+    )
+
+
+def make_project_snippet(project_id: str, project_name: str,
+                         start_date: str, end_date: str) -> Snippet:
+    """
+    Make tj project in a snippet format. `end_date` can be in the diff format.
+    """
+
+    return Snippet(
+        type="project",
+        props=[project_id, f"\"{project_name}\"", start_date, end_date]
+    )
+
+
 def write_to_tj_file(tasks: List[Task], resources: List[Resource], file_path: str):
     """
-    Write given tasks to given file in tj format.
+    Write given tasks to given file in tj format. All tasks are assumed to be
+    the lowest level one right now since we are mostly interesting in
+    estimating timelines.
     """
 
     raise NotImplementedError()
