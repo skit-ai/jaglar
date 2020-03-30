@@ -2,6 +2,7 @@
 Module for interacting with tj. Mostly dumping tasks in tj3 file.
 """
 
+from dataclasses import dataclass
 from typing import List, Optional
 
 from jaglar.types import Resource, Task
@@ -36,7 +37,7 @@ def format_node(node: Node, indent=0, force_brackets=False) -> str:
     for child in node.children:
         blocks.append(format_node(child, indent + 1))
 
-    blocks.append("}")
+    blocks.append(indent_str + "}")
 
     return "\n".join(blocks)
 
@@ -52,7 +53,7 @@ def task_to_node(task: Task) -> Node:
     ]
 
     assignees = [
-        Node(type="allocate", props=[assignee]) for assignee in task.assignee
+        Node(type="allocate", props=[assignee.name]) for assignee in task.assignee
     ]
 
     return Node(
