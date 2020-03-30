@@ -79,7 +79,7 @@ def resource_to_node(resource: Resource) -> Node:
         props=[resource.name, f"\"{resource.name}\""],
         children=[
             Node(
-                type="limit",
+                type="limits",
                 props=[],
                 children=[Node(type="dailymax", props=[f"{resource.hours_per_day}h"])]
             )
