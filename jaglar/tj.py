@@ -34,7 +34,7 @@ def format_node(node: Node, indent=0, force_brackets=False) -> str:
 
     blocks = [top_str + " {"]
 
-    for child in node.children:
+    for child in (node.children or []):
         blocks.append(format_node(child, indent + 1))
 
     blocks.append(indent_str + "}")
