@@ -98,11 +98,15 @@ def make_project_node(project_id: str, project_name: str,
     )
 
 
-def write_to_tj_file(tasks: List[Task], resources: List[Resource], file_path: str):
+def format(project: Node, resources: List[Node], tasks: List[Node]):
     """
-    Write given tasks to given file in tj format. All tasks are assumed to be
-    the lowest level one right now since we are mostly interesting in
-    estimating timelines.
+    Format the project in tj format. All tasks are assumed to be the lowest
+    level one right now since we are mostly interesting in estimating
+    timelines.
     """
 
-    raise NotImplementedError()
+    return "\n\n".join([
+        format_node(project),
+        *[format_node(res) for res in resources],
+        *[format_node(task) for task in tasks]
+    ])
