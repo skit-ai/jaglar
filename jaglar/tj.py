@@ -8,65 +8,91 @@ from jaglar.types import Resource, Task
 
 
 @dataclass
-class Snippet:
+class Node:
     """
-    A snippet is a piece that maps to a valid taskjuggler code block. This
+    A node is a piece that maps to a valid taskjuggler code block. This
     doesn't cover macros.
     """
 
     type: str
     props: List[str]
-    children: Optional[List["Snippet"]] = None
+    children: Optional[List["Node"]] = None
 
 
-def format_snippet(snippet: Snippet, indent=0, force_brackets=False) -> str:
+def format_node(node: Node, indent=0, force_brackets=False) -> str:
     """
-    Convert snippet to str that goes in a tj file.
+    Convert node to str that goes in a tj file.
     """
 
     indent_str = "  " * indent
-    top_str = indent_str + snippet.type + " " + " ".join(snippet.props)
+    top_str = indent_str + node.type + " " + " ".join(node.props)
 
     if not force_brackets:
-        if not snippet.children:
+        if not node.children:
             return top_str
 
     blocks = [top_str + " {"]
 
-    for child in snippet.children:
-        blocks.append(format_snippet(child, indent + 1))
+    for child in node.children:
+        blocks.append(format_node(child, indent + 1))
 
     blocks.append("}")
 
     return "\n".join(blocks)
 
 
-
-def resource_to_snippet(resource: Resource) -> Snippet:
+def task_to_node(task: Task) -> Node:
     """
-    Convert a resource to tj snippet.
+    Make node for given task. Note that the effort is considered in
+    person-hours.
     """
 
-    return Snippet(
+    dependencies = [
+        Node(type="depends", props=[dep.name]) for dep in task.depends_on
+    ]
+
+    assignees = [
+        Node(type="allocate", props=[assignee]) for assignee in task.assignee
+    ]
+
+    return Node(
+        type="task",
+        props=[task.name, f"\"{task.name}\""],
+        children=[
+            Node(
+                type="effort",
+                props=[f"{task.effort}h"]
+            ),
+            *assignees, *dependencies
+        ]
+    )
+
+
+def resource_to_node(resource: Resource) -> Node:
+    """
+    Convert a resource to tj node.
+    """
+
+    return Node(
         type="resource",
         props=[resource.name, f"\"{resource.name}\""],
         children=[
-            Snippet(
+            Node(
                 type="limit",
                 props=[],
-                children=[Snippet(type="dailymax", props=[f"{resource.hours_per_day}h"])]
+                children=[Node(type="dailymax", props=[f"{resource.hours_per_day}h"])]
             )
         ]
     )
 
 
-def make_project_snippet(project_id: str, project_name: str,
-                         start_date: str, end_date: str) -> Snippet:
+def make_project_node(project_id: str, project_name: str,
+                      start_date: str, end_date: str) -> Node:
     """
-    Make tj project in a snippet format. `end_date` can be in the diff format.
+    Make tj project in a node format. `end_date` can be in the diff format.
     """
 
-    return Snippet(
+    return Node(
         type="project",
         props=[project_id, f"\"{project_name}\"", start_date, end_date]
     )
