@@ -48,7 +48,7 @@ def task_to_node(task: Task) -> Node:
     """
 
     dependencies = [
-        Node(type="depends", props=[dep.name]) for dep in task.depends_on
+        Node(type="depends", props=[dep.name]) for dep in (task.depends_on or [])
     ]
 
     assignees = [

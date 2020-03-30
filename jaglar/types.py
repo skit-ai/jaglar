@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 
 @dataclass
@@ -12,4 +12,4 @@ class Task:
     name: str
     assignee: List[Resource]
     effort: float
-    depends_on: List["Task"]
+    depends_on: Optional[List["Task"]] = None
