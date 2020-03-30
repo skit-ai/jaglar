@@ -107,7 +107,7 @@ def format_project(project: Node, resources: List[Node], tasks: List[Node]):
     """
 
     return "\n\n".join([
-        format_node(project),
+        format_node(project, force_brackets=True),
         *[format_node(res) for res in resources],
         *[format_node(task) for task in tasks]
     ])
