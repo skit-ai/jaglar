@@ -99,15 +99,33 @@ def make_project_node(project_id: str, project_name: str,
     )
 
 
-def format_project(project: Node, resources: List[Node], tasks: List[Node]):
+def make_gantt_node() -> Node:
+    return Node(
+        type="taskreport",
+        props=["\"Gantt Chart\""],
+        children=[
+            Node(type="formats", props=["html"]),
+            Node(type="headline", props=["\"Project Gantt Chart\""]),
+            Node(type="columns", props=["heirarchindex, name, start, end, effort, duration, chart"]),
+            Node(type="timeformat", props=["\"%a %Y-%m-%d\""])
+        ]
+    )
+
+
+def format_project(project: Node, resources: List[Node], tasks: List[Node], generate_report=True):
     """
     Format the project in tj format. All tasks are assumed to be the lowest
     level one right now since we are mostly interesting in estimating
     timelines.
     """
 
-    return "\n\n".join([
+    formatted_nodes = [
         format_node(project, force_brackets=True),
         *[format_node(res) for res in resources],
         *[format_node(task) for task in tasks]
-    ])
+    ]
+
+    if generate_report:
+        formatted_nodes.append(format_node(make_gantt_node()))
+
+    return "\n\n".join(formatted_nodes)
