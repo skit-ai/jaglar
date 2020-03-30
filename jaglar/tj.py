@@ -98,7 +98,7 @@ def make_project_node(project_id: str, project_name: str,
     )
 
 
-def format(project: Node, resources: List[Node], tasks: List[Node]):
+def format_project(project: Node, resources: List[Node], tasks: List[Node]):
     """
     Format the project in tj format. All tasks are assumed to be the lowest
     level one right now since we are mostly interesting in estimating
