@@ -106,7 +106,7 @@ def make_gantt_node() -> Node:
         children=[
             Node(type="formats", props=["html"]),
             Node(type="headline", props=["\"Project Gantt Chart\""]),
-            Node(type="columns", props=["heirarchindex, name, start, end, effort, duration, chart"]),
+            Node(type="columns", props=["hierarchindex, name, start, end, effort, duration, chart"]),
             Node(type="timeformat", props=["\"%a %Y-%m-%d\""])
         ]
     )
