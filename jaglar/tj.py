@@ -19,7 +19,7 @@ class Snippet:
     children: Optional["Snippet"] = None
 
 
-def format_snippet(snippet: Snippet, indent=0) -> str:
+def format_snippet(snippet: Snippet, indent=0, force_brackets=False) -> str:
     """
     Convert snippet to str that goes in a tj file.
     """
@@ -27,8 +27,9 @@ def format_snippet(snippet: Snippet, indent=0) -> str:
     indent_str = "  " * indent
     top_str = indent_str + snippet.type + " " + " ".join(snippet.props)
 
-    if not snippet.children:
-        return top_str
+    if not force_brackets:
+        if not snippet.children:
+            return top_str
 
     blocks = [top_str + " {"]
 
