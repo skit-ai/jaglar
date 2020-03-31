@@ -2,14 +2,14 @@
 Module for working with ganttpro exported data.
 """
 
-
+from typing import Dict, List
 from xml.etree.ElementTree import fromstring
 
 import pandas as pd
 from pydash import py_
 from xmljson import badgerfish as bf
 
-from jaglar.types import Resource
+from jaglar.types import Resource, Task
 
 
 def read_xlsx_export(file_path: str):
@@ -32,7 +32,11 @@ class Project:
         self.xml_data = read_xml_export(xml_path)
 
     @property
-    def resources(self):
+    def resources(self) -> List[Resource]:
+        """
+        Parse list of resources using excel data.
+        """
+
         assignments = [
             it.split(",")
             for it in self.xlsx_data["Assigned to"].dropna().tolist()
@@ -41,4 +45,31 @@ class Project:
 
     @property
     def tasks(self):
-        raise NotImplementedError()
+        """
+        Return tasks with dependencies and resources assigned. This merges
+        information from both sources. Also we only consider tasks with type
+        task and not groups.
+        """
+
+        resources = self.resources
+
+        # NOTE: We use WBS Number for identifying tasks
+        excel_info: Dict[str, Task] = {}
+
+        for _, row in self.xlsx_data.iterrows():
+            if row["Type"] != "task":
+                continue
+
+            try:
+                assignees = [Resource(name=name.strip()) for name in row["Assigned to"].split(",")]
+            except AttributeError:
+                # There are cases where resources are not assigned
+                assignees = [Resource(name="Ghost")]
+
+            excel_info[row["WBS Number"]] = Task(
+                name=row["Task name / Title"],
+                assignee=assignees,
+                effort=int(row["Duration (hours)"])
+            )
+
+        return list(excel_info.values())
