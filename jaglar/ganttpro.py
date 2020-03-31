@@ -10,6 +10,7 @@ from pydash import py_
 from xmljson import badgerfish as bf
 
 from jaglar.types import Resource, Task
+from jaglar.utils import map_keys
 
 
 def read_xlsx_export(file_path: str):
@@ -18,7 +19,15 @@ def read_xlsx_export(file_path: str):
 
 def read_xml_export(file_path: str):
     with open(file_path) as fp:
-        return bf.data(fromstring(fp.read()))
+        data = bf.data(fromstring(fp.read()))
+
+    def _clean_key(k: str) -> str:
+        try:
+            return k.split("}", 1)[1]
+        except IndexError:
+            return k
+
+    return map_keys(data, _clean_key)
 
 
 class Project:
