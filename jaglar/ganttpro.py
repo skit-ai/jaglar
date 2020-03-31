@@ -81,4 +81,47 @@ class Project:
                 effort=int(row["Duration (hours)"])
             )
 
+        # NOTE: There are a few assumptions here about number of projects and
+        #       all. This is not foolproof.
+
+        # These tasks are the superset of what we are interested in excel_info
+        xml_tasks = self.xml_data["Project"]["Tasks"]["Task"]
+
+        def _sanitize_wbs(wbs: str) -> str:
+            wbs = str(wbs)
+            # HACK: xml data has extra thing added in WBS
+            if "." in wbs:
+                return wbs.split(".", 1)[1]
+            else:
+                return wbs
+
+        uid_to_wbs = {t["UID"]["$"]: _sanitize_wbs(t["WBS"]["$"]) for t in xml_tasks}
+
+        # Mostly mapping from WBS to list of dependencies, also specified in WBS
+        xml_info: Dict[str, List[str]] = {}
+
+        for xml_task in xml_tasks:
+            wbs = _sanitize_wbs(xml_task["WBS"]["$"])
+
+            if "PredecessorLink" in xml_task:
+                pred_link = xml_task["PredecessorLink"]
+
+                if isinstance(pred_link, dict):
+                    predecessor_wbses = [uid_to_wbs[pred_link["PredecessorUID"]["$"]]]
+                elif isinstance(pred_link, list):
+                    predecessor_wbses = [
+                        uid_to_wbs[it["PredecessorUID"]["$"]]
+                        for it in pred_link
+                    ]
+                else:
+                    raise TypeError(f"Wrong type of PredecessorLink")
+                xml_info[wbs] = predecessor_wbses
+
+        # Now we patch the excel_info tasks with dependency information
+        for wbs, predecessor_wbses in xml_info.items():
+            if wbs not in excel_info:
+                continue
+
+            excel_info[wbs].depends_on = [excel_info[p_wbs] for p_wbs in predecessor_wbses]
+
         return list(excel_info.values())
