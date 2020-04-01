@@ -76,7 +76,7 @@ class Project:
                 assignees = [Resource(name="Ghost")]
 
             excel_info[row["WBS Number"]] = Task(
-                name=row["Task name / Title"],
+                name=row["Task name / Title"] + " " + row["WBS Number"],
                 assignee=assignees,
                 effort=int(row["Duration (hours)"])
             )
