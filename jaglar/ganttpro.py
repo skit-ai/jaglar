@@ -51,7 +51,12 @@ class Project:
             [name.strip() for name in it.split(",")]
             for it in self.xlsx_data["Assigned to"].dropna().tolist()
         ]
-        return [Resource(name=name) for name in py_.uniq(py_.flatten(assignments))]
+
+        resources = [Resource(name=name) for name in py_.uniq(py_.flatten(assignments))]
+
+        # We also add a ghost for unassigned items
+        resources.append(Resource(name="Ghost"))
+        return resources
 
     @property
     def tasks(self):
