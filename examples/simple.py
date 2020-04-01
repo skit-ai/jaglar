@@ -1,6 +1,8 @@
 """
+Basic example showing how to generate a tjp file programmatically.
+
 Usage:
-  example.py <output-file>
+  simple.py <output-file>
 """
 
 from docopt import docopt

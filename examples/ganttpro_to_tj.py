@@ -1,6 +1,8 @@
 """
+Example script for converting ganttpro exports to taskjuggler file.
+
 Usage:
-  example.py <output-file>
+  ganttpro_to_tj.py <output-file>
 """
 
 from docopt import docopt
@@ -10,11 +12,12 @@ from jaglar.tj import (format_project, make_project_node,
                        normalize_gantt_pro_projects, resource_to_node,
                        task_to_node)
 
+# We are mixing all these projects in a single mega project
 gpjs = [
-    # Project("c1", "./data/v4_ On-cloud-1-language.xlsx", "./data/v4_ On-cloud-1-language.xml"),
-    # Project("c2", "./data/v4_ On-cloud-2-language.xlsx", "./data/v4_ On-cloud-2-language.xml"),
-    # Project("p1", "./data/v4_ On-premise-1-language.xlsx", "./data/v4_ On-premise-1-language.xml"),
-    # Project("p3", "./data/v4_ On-premise-2-language.xlsx", "./data/v4_ On-premise-2-language.xml")
+    Project("c1", "./data/v4_ On-cloud-1-language.xlsx", "./data/v4_ On-cloud-1-language.xml"),
+    Project("c2", "./data/v4_ On-cloud-2-language.xlsx", "./data/v4_ On-cloud-2-language.xml"),
+    Project("p1", "./data/v4_ On-premise-1-language.xlsx", "./data/v4_ On-premise-1-language.xml"),
+    Project("p2", "./data/v4_ On-premise-2-language.xlsx", "./data/v4_ On-premise-2-language.xml")
 ]
 
 pj = make_project_node("pj", "pj", "2020-04-01", "+40m")
