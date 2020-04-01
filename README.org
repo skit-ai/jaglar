@@ -1,5 +1,7 @@
 #+TITLE: jaglar
 
+[[https://pypi.org/project/jaglar/][https://img.shields.io/pypi/v/jaglar.svg?style=flat-square]]
+
 Tool for project management backed by [[https://taskjuggler.org/][tj]].
 
 We have been using a few project management tools like [[https://ganttpro.com/][ganttpro]], [[https://www.atlassian.com/software/jira][jira]] but the
