@@ -1,8 +1,12 @@
 [tool.poetry]
 name = "jaglar"
 version = "0.1.0"
-description = ""
+description = "Tool for project management backed by taskjuggler."
 authors = ["Abhinav Tushar <abhinav@lepisma.xyz>"]
+include = ["README.org"]
+homepage = "https://github.com/Vernacular-ai/jaglar/"
+repository = "https://github.com/Vernacular-ai/jaglar/"
+license = "GPL-3.0-only"
 
 [tool.poetry.dependencies]
 python = "^3.8"

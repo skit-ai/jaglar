@@ -1,3 +1,19 @@
 #+TITLE: jaglar
 
-Scripts for project management backed by [[https://taskjuggler.org/][tj]].
+Tool for project management backed by [[https://taskjuggler.org/][tj]].
+
+We have been using a few project management tools like [[https://ganttpro.com/][ganttpro]], [[https://www.atlassian.com/software/jira][jira]] but the
+features aren't sufficient or are hard to flex programmatically. In jaglar we
+attempt to map data from these other tools to [[https://taskjuggler.org/][taskjuggler]] which provides much
+more control over what we can do.
+
+* Quickstart
+=jaglar= is on pypi so you need to do =pip install jaglar=.
+
+While the scripts here are pretty much custom built for our own purpose, you can
+try inspecting a few examples in ~./examples~ directory which are targeted at
+generating gantt charts after running tj's resource allocation.
+
+Basic idea is to have a set of intermediate types (=jaglar.types=) for project
+management pieces which can then be generated from other tool exports and be
+converted to tj format.
