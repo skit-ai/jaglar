@@ -2,10 +2,46 @@
 Module for interacting with tj. Mostly dumping tasks in tj3 file.
 """
 
+import dataclasses
+import re
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List, Optional, Tuple
 
+import jaglar.ganttpro as ganttpro
 from jaglar.types import Resource, Task
+
+
+def normalize_name(name: str) -> str:
+    """
+    Standardize name string to become a valid tj id
+    """
+
+    if not name:
+        return name
+
+    name = re.sub(r"[\./\- ]", "_", name.lower())
+
+    if name[0].isdigit():
+        name = "a_" + name
+
+    return name
+
+
+def normalize_resource(resource: Resource) -> Resource:
+    return dataclasses.replace(resource, name=normalize_name(resource.name))
+
+
+def normalize_task(task: Task) -> Task:
+    new_task = dataclasses.replace(
+        task,
+        name=normalize_name(task.name),
+        assignee=[normalize_resource(res) for res in task.assignee],
+    )
+
+    if task.depends_on:
+        new_task.depends_on = [normalize_task(t) for t in task.depends_on]
+
+    return new_task
 
 
 @dataclass
@@ -110,6 +146,17 @@ def make_gantt_node() -> Node:
             Node(type="timeformat", props=["\"%a %Y-%m-%d\""])
         ]
     )
+
+
+def normalize_gantt_pro_project(project: ganttpro.Project) -> Tuple[List[Resource], List[Task]]:
+    """
+    Convert a ganttpro project to list of valid resources and tasks for tj.
+    """
+
+    resources = [normalize_resource(res) for res in project.resources]
+    tasks = [normalize_task(task) for task in project.tasks]
+
+    return resources, tasks
 
 
 def format_project(project: Node, resources: List[Node], tasks: List[Node], generate_report=True):

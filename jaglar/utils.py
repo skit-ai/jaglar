@@ -1,21 +1,4 @@
-import re
 from typing import Dict
-
-
-def standardize_name(name: str) -> str:
-    """
-    Standardize name string to become a valid tj id
-    """
-
-    if not name:
-        return name
-
-    name = re.sub(r"[\./\- ]", "_", name.lower())
-
-    if name[0].isdigit():
-        name = "a_" + name
-
-    return name
 
 
 def map_keys(d: Dict, fn) -> Dict:
