@@ -36,7 +36,8 @@ class Project:
     have different data formats.
     """
 
-    def __init__(self, xlsx_path: str, xml_path: str):
+    def __init__(self, name: str, xlsx_path: str, xml_path: str):
+        self.name = name
         self.xlsx_data = read_xlsx_export(xlsx_path)
         self.xml_data = read_xml_export(xml_path)
 
