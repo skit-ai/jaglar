@@ -1,0 +1,50 @@
+project pj "pj" 2020-03-30 +2m {
+}
+
+resource ml "ml" {
+  limits  {
+    dailymax 8h
+  }
+}
+
+resource product "product" {
+  limits  {
+    dailymax 8h
+  }
+}
+
+resource annotator "annotator" {
+  limits  {
+    dailymax 8h
+  }
+}
+
+resource eng "eng" {
+  limits  {
+    dailymax 8h
+  }
+}
+
+task t1 "t1" {
+  effort 20h
+  allocate annotator
+}
+
+task t2 "t2" {
+  effort 8h
+  allocate ml
+  depends t1
+}
+
+task t3 "t3" {
+  effort 8h
+  allocate ml
+  depends t2
+}
+
+taskreport "Gantt Chart" {
+  formats html
+  headline "Project Gantt Chart"
+  columns hierarchindex, name, start, end, effort, duration, chart
+  timeformat "%a %Y-%m-%d"
+}
