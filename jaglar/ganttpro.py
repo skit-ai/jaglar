@@ -33,7 +33,7 @@ def read_xml_export(file_path: str):
 class Project:
     """
     A gantt pro project. This needs both the excel and xml export because both
-    have different data formats.
+    together cover all the fields we want.
     """
 
     def __init__(self, name: str, xlsx_path: str, xml_path: str):
