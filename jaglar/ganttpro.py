@@ -61,8 +61,6 @@ class Project:
         task and not groups.
         """
 
-        resources = self.resources
-
         # NOTE: We use WBS Number for identifying tasks
         excel_info: Dict[str, Task] = {}
 
