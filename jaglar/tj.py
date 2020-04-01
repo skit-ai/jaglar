@@ -19,7 +19,7 @@ def normalize_name(name: str) -> str:
     if not name:
         return name
 
-    name = re.sub(r"[\./\- ]", "_", name.lower())
+    name = re.sub(r"[^a-zA-z0-9_]", "_", name.lower())
 
     if name[0].isdigit():
         name = "a_" + name
