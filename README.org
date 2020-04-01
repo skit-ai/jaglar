@@ -7,7 +7,7 @@ features aren't sufficient or are hard to flex programmatically. In jaglar we
 attempt to map data from these other tools to [[https://taskjuggler.org/][taskjuggler]] which provides much
 more control over what we can do.
 
-* Quickstart
+** Quickstart
 =jaglar= is on pypi so you need to do =pip install jaglar=.
 
 While the scripts here are pretty much custom built for our own purpose, you can
