@@ -44,6 +44,15 @@ def normalize_task(task: Task) -> Task:
     return new_task
 
 
+def namespace_task(task: Task, prefix: str) -> Task:
+    new_task = dataclasses.replace(task, name=prefix + "_" + task.name)
+
+    if task.depends_on:
+        new_task.depends_on = [namespace_task(t, prefix) for t in task.depends_on]
+
+    return new_task
+
+
 @dataclass
 class Node:
     """
