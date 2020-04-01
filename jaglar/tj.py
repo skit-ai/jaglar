@@ -7,6 +7,8 @@ import re
 from dataclasses import dataclass
 from typing import List, Optional, Tuple
 
+from pydash import py_
+
 import jaglar.ganttpro as ganttpro
 from jaglar.types import Resource, Task
 
@@ -157,13 +159,20 @@ def make_gantt_node() -> Node:
     )
 
 
-def normalize_gantt_pro_project(project: ganttpro.Project) -> Tuple[List[Resource], List[Task]]:
+def normalize_gantt_pro_projects(*projects: List[ganttpro.Project]) -> Tuple[List[Resource], List[Task]]:
     """
-    Convert a ganttpro project to list of valid resources and tasks for tj.
+    Convert ganttpro projects to list of valid resources and tasks for tj.
     """
 
-    resources = [normalize_resource(res) for res in project.resources]
-    tasks = [normalize_task(task) for task in project.tasks]
+    all_resources = py_.flatten([[normalize_resource(res) for res in project] for project in projects])
+    resources = py_.uniq_by(all_resources, lambda res: res.name)
+
+    tasks = []
+
+    for project in projects:
+        prefix = normalize_name(project.name)
+        for task in project.tasks:
+            tasks.append(namespace_task(normalize_task(task), prefix))
 
     return resources, tasks
 
