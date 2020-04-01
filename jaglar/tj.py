@@ -164,7 +164,10 @@ def normalize_gantt_pro_projects(*projects: List[ganttpro.Project]) -> Tuple[Lis
     Convert ganttpro projects to list of valid resources and tasks for tj.
     """
 
-    all_resources = py_.flatten([[normalize_resource(res) for res in project] for project in projects])
+    all_resources = py_.flatten([
+        [normalize_resource(res) for res in project.resources]
+        for project in projects
+    ])
     resources = py_.uniq_by(all_resources, lambda res: res.name)
 
     tasks = []
